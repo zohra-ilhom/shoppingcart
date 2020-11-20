@@ -10,7 +10,7 @@ class Counters extends Component {
             {name: 'zohra', value: 0, id: 2},
             {name: 'dekoti', value: 2, id: 3},
             {name: 'Perse', value: 4, id: 41},
-            {name: 'Astro', value: 4, id: 42},
+            {name: 'blehbleh', value: 4, id: 42},
             {name: 'Pasting', value: 4, id: 43},
             {name: 'TEsting', value: 4, id: 44},
             {name: 'Pasting', value: 4, id: 47},
