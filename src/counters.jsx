@@ -4,6 +4,7 @@ import Pagination from './pagination';
 import {paginate} from './paginate';
 
 
+
 class Counters extends Component {
     state = { 
         counters: [
@@ -12,12 +13,9 @@ class Counters extends Component {
             {name: 'Perse', value: 4, id: 41},
             {name: 'blehbleh', value: 4, id: 42},
             {name: 'Pasting', value: 4, id: 43},
-            {name: 'TEsting', value: 4, id: 44},
-            {name: 'Pasting', value: 4, id: 47},
-            {name: 'Pasting', value: 4, id: 48},
-            {name: 'Pasting', value: 4, id: 49},
+       
         ],
-        pageSize: 3,
+        pageSize: 9,
         currentPage: 1,
     
 
@@ -25,8 +23,8 @@ class Counters extends Component {
 
     addItem = () => {
         const inputz = document.getElementById('input').value
-        console.log(inputz);
-        this.setState(state =>({counters: this.state.counters.concat({name: inputz, value: 1, id: 5})}));
+        let uniqueId = Date.now()
+        this.setState(state =>({counters: this.state.counters.concat({name: inputz, value: 1, id: uniqueId})}));
     
     }
 
@@ -58,24 +56,28 @@ class Counters extends Component {
        
      }
 
-     filterItem = () => {
-         const inpu = document.getElementById('inputFilter').value
-         const counters = this.state.counters.filter(counter => counter.name.includes(inpu))
-         this.setState({counters: counters})
-         console.log(counters)
-         
-     }
+    //  filterItem = () => {
+    //      const inpu = document.getElementById('inputFilter').value
+    //      const counters = this.state.counters.filter(counter => counter.name.includes(inpu))
+    //      this.setState({counters: counters})
+    //      console.log(counters)
+    //  }
 
      handlePageChange = (page) => {
          this.setState({currentPage : page})
      }
-   
 
+     handleKeyPress = (event) => {
+        const inpu = document.getElementById('inputFilter').value
+        const counters = this.state.counters.filter(counter => counter.name.includes(inpu))
+        if (event.key === 'Enter' ? this.setState({counters: counters}) : null);
+
+     }
 
     render() { 
         
         const counters = paginate(this.state.counters, this.state.currentPage, this.state.pageSize);
-        console.log(counters)
+
 
         
         
@@ -86,12 +88,12 @@ class Counters extends Component {
                 <button onClick={this.handleReset} type="button" className="btn m-2 btn-primary">RESET</button>
                 <p>{this.stateStatus()}</p>
                 <input id="input" type="text" placeholder="add item to list" className="m-2"></input>
-                <button onClick={this.addItem}  type="button" className="btn m-2 btn-dark">Add</button>
+                <button onClick={this.addItem} type="button" className="btn m-2 btn-dark">Add</button>
 
                 <br></br>
 
-                <input id="inputFilter" type="text" placeholder="Search" className="m-2"></input>
-                <button onClick={this.filterItem}  type="button" className="btn m-2 btn-dark">Filter</button>
+                <input onKeyPress={this.handleKeyPress} id="inputFilter" type="text" placeholder="Search" className="m-2"></input>
+       
 
 
                 {counters.map(counter => <Counter 

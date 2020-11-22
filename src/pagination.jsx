@@ -5,7 +5,7 @@ import _ from 'lodash';
 //use sfc shortcut to create a stateless component that takes in props
 const Pagination = (props) => {
 
-    const {itemsCount, pageSize, onPageChange, currentPage, items } = props;
+    const {itemsCount, pageSize, onPageChange, currentPage} = props;
     const pagesCount = Math.ceil(itemsCount / pageSize);
       if (pagesCount === 1) return null;
     const pages = _.range(1, pagesCount + 1);
