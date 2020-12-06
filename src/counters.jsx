@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Counter from './counter';
+import Searchbox from './searchbox';
+import InputCounter from './inputcounter';
 import Pagination from './pagination';
 import {paginate} from './paginate';
+
 
 
 
@@ -15,17 +18,29 @@ class Counters extends Component {
             {name: 'Pasting', value: 4, id: 43},
        
         ],
-        pageSize: 9,
+        searchCounters: '',
+        filteredCounters: '',
         currentPage: 1,
+        pageSize: 6,
     
-
      }
+
 
     addItem = () => {
         const inputz = document.getElementById('input').value
         let uniqueId = Date.now()
         this.setState(state =>({counters: this.state.counters.concat({name: inputz, value: 1, id: uniqueId})}));
-    
+        document.getElementById('input').value = '';
+        
+    }
+
+    handleKeyPressed = (event) => {
+        const inputz = document.getElementById('input').value
+        let uniqueId = Date.now()
+        if (event.key === "Enter" ? this.setState(state =>({counters: this.state.counters.concat({name: inputz, value: 1, id: uniqueId})})) : null);
+        if (event.key === "Enter" ? document.getElementById('input').value = '': null);
+        
+
     }
 
     handleDelete = (counterId) => {
@@ -56,43 +71,46 @@ class Counters extends Component {
        
      }
 
-    //  filterItem = () => {
-    //      const inpu = document.getElementById('inputFilter').value
-    //      const counters = this.state.counters.filter(counter => counter.name.includes(inpu))
-    //      this.setState({counters: counters})
-    //      console.log(counters)
-    //  }
+
+     handleSearch = (event) => {
+         
+         console.log(event.target.value)
+         this.setState({searchCounters : event.target.value})
+         let filterCounters = this.state.counters.filter( counter => {return counter.name.toLowerCase().includes(this.state.searchCounters.toLowerCase())});
+         this.setState({filteredCounters : filterCounters});
+         console.log(filterCounters);
+     }
 
      handlePageChange = (page) => {
-         this.setState({currentPage : page})
-     }
-
-     handleKeyPress = (event) => {
-        const inpu = document.getElementById('inputFilter').value
-        const counters = this.state.counters.filter(counter => counter.name.includes(inpu))
-        if (event.key === 'Enter' ? this.setState({counters: counters}) : null);
+        this.setState({currentPage : page})
 
      }
+
 
     render() { 
+        let filterCounters = this.state.counters.filter( counter => {return counter.name.toLowerCase().includes(this.state.searchCounters.toLowerCase())});
+        //console.log(filterCounters)
+        const counters = paginate(filterCounters, this.state.currentPage, this.state.pageSize);
         
-        const counters = paginate(this.state.counters, this.state.currentPage, this.state.pageSize);
-
-
         
+
         
         return (
+
+            
         
             <div>
                 
                 <button onClick={this.handleReset} type="button" className="btn m-2 btn-primary">RESET</button>
                 <p>{this.stateStatus()}</p>
-                <input id="input" type="text" placeholder="add item to list" className="m-2"></input>
-                <button onClick={this.addItem} type="button" className="btn m-2 btn-dark">Add</button>
+
+                <InputCounter 
+                    addItem={this.addItem} 
+                    handleKeyPressed={this.handleKeyPressed}/>
 
                 <br></br>
 
-                <input onKeyPress={this.handleKeyPress} id="inputFilter" type="text" placeholder="Search" className="m-2"></input>
+                <Searchbox handleInput={this.handleSearch}/>
        
 
 
@@ -104,15 +122,17 @@ class Counters extends Component {
                     counter = {counter}
                     onIncrement={this.handleIncrement}
                     onDecrement={this.handleDecrement}
-                    value={counter.value} />)}
+                    value={counter.value} />)
+                }
 
                 <Pagination 
-                    itemsCount = {this.state.counters.length} 
+                    itemsCount = {filterCounters.length} 
                     pageSize = {this.state.pageSize} 
                     onPageChange={this.handlePageChange}
                     currentPage = {this.state.currentPage}
-    
                 />
+
+
 
                     
                     
