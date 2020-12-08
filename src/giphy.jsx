@@ -10,17 +10,23 @@ class Giphyfun extends Component {
             items: [],
             userSearch: '',
             searchLength: '' ,
+            testing: 'testing state',
+            
+
            
         }
 
     }
-    componentWillMount() {
+    componentDidMount() {
         
-        const url = 'http://api.giphy.com/v1/gifs/trending?api_key=3' 
+        const url = 'http://api.giphy.com/v1/gifs/trending?api_key=3tgyczxyLIv8UwHGBqnT6qtZYHShOblR' 
         
         fetch(url)
             .then(response => response.json() )
-            .then(json => { this.setState({items: json.data}) });
+            .then(json => { this.setState({items: json.data}) })
+
+        console.log(this.state.items);
+        
             
 
     }
@@ -30,7 +36,7 @@ class Giphyfun extends Component {
         const userSearch= event.target.value
         //console.log(userSearch)
         this.setState({userSearch: userSearch})
-        const url = 'http://api.giphy.com/v1/gifs/search?'+ userSearch;
+        const url = 'http://api.giphy.com/v1/gifs/search?api_key=3tgyczxyLIv8UwHGBqnT6qtZYHShOblR&q='+ userSearch;
         
         if (userSearch.length >0) {
             fetch(url)
@@ -42,7 +48,7 @@ class Giphyfun extends Component {
         }
 
         else {
-            fetch('http://api.giphy.com/v1/gifs/trending?api_keyR')
+            fetch('http://api.giphy.com/v1/gifs/trending?api_key=3tgyczxyLIv8UwHGBqnT6qtZYHShOblR')
                 .then(response => response.json() )
                 .then(json => { this.setState({items: json.data}) });
             
@@ -53,9 +59,12 @@ class Giphyfun extends Component {
         
     }
 
+  
+
 
     render() { 
         var {items} = this.state;
+  
      
 
         return ( 
@@ -64,14 +73,11 @@ class Giphyfun extends Component {
                 <h2>Find the Right Giphy For You</h2>
                 <Searchbox handleInput={this.handleSearch} />
            
+                { items.length > 0 &&
+                    <Giphycard url={items[0].images.original.url}/>
+                }
                 
-                <ul> 
-                    {items.map(item => <li key={item.id}><Giphycard 
-                        url= {item.images.original.url}
-                        heading= {item.title} /></li> 
-                    )}
-                    
-                </ul>
+        
                 
                 
                 
