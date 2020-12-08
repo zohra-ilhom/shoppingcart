@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+//import Navigation from './navigation';
 import Counter from './counter';
 import Searchbox from './searchbox';
 import InputCounter from './inputcounter';
@@ -78,7 +79,6 @@ class Counters extends Component {
          this.setState({searchCounters : event.target.value})
          let filterCounters = this.state.counters.filter( counter => {return counter.name.toLowerCase().includes(this.state.searchCounters.toLowerCase())});
          this.setState({filteredCounters : filterCounters});
-         console.log(filterCounters);
      }
 
      handlePageChange = (page) => {
@@ -89,7 +89,6 @@ class Counters extends Component {
 
     render() { 
         let filterCounters = this.state.counters.filter( counter => {return counter.name.toLowerCase().includes(this.state.searchCounters.toLowerCase())});
-        //console.log(filterCounters)
         const counters = paginate(filterCounters, this.state.currentPage, this.state.pageSize);
         
         
@@ -100,6 +99,7 @@ class Counters extends Component {
             
         
             <div>
+               
                 
                 <button onClick={this.handleReset} type="button" className="btn m-2 btn-primary">RESET</button>
                 <p>{this.stateStatus()}</p>
