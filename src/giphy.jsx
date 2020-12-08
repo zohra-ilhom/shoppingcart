@@ -16,7 +16,7 @@ class Giphyfun extends Component {
     }
     componentWillMount() {
         
-        const url = 'http://api.giphy.com/v1/gifs/trending?api_key=3tgyczxyLIv8UwHGBqnT6qtZYHShOblR' 
+        const url = 'http://api.giphy.com/v1/gifs/trending?api_key=3' 
         
         fetch(url)
             .then(response => response.json() )
@@ -30,7 +30,7 @@ class Giphyfun extends Component {
         const userSearch= event.target.value
         //console.log(userSearch)
         this.setState({userSearch: userSearch})
-        const url = 'http://api.giphy.com/v1/gifs/search?api_key=3tgyczxyLIv8UwHGBqnT6qtZYHShOblR&q='+ userSearch;
+        const url = 'http://api.giphy.com/v1/gifs/search?'+ userSearch;
         
         if (userSearch.length >0) {
             fetch(url)
@@ -42,7 +42,7 @@ class Giphyfun extends Component {
         }
 
         else {
-            fetch('http://api.giphy.com/v1/gifs/trending?api_key=3tgyczxyLIv8UwHGBqnT6qtZYHShOblR')
+            fetch('http://api.giphy.com/v1/gifs/trending?api_keyR')
                 .then(response => response.json() )
                 .then(json => { this.setState({items: json.data}) });
             
