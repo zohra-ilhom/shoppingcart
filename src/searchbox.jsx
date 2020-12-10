@@ -4,7 +4,10 @@ class Searchbox extends Component {
     state = {  }
     render() { 
         return ( 
-            <input onChange={this.props.handleInput} type="text" placeholder="search" />
+            <form class="form-inline">
+                <input onChange={this.props.handleInput} className="form-control" type="search" placeholder="Search" aria-label="Search" />
+            </form>
+            
          );
     }
 }

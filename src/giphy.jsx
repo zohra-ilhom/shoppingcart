@@ -9,8 +9,9 @@ class Giphyfun extends Component {
         this.state = {
             items: [],
             userSearch: '',
-            searchLength: '' ,
+            searchLength: 0 ,
             testing: 'testing state',
+            shuffle: 0,
             
 
            
@@ -23,13 +24,13 @@ class Giphyfun extends Component {
         
         fetch(url)
             .then(response => response.json() )
-            .then(json => { this.setState({items: json.data}) })
+            .then(json => { this.setState({items: json.data, searchLength: json.pagination.count}) })
 
-        console.log(this.state.items);
         
-            
 
     }
+
+    
 
    
     handleSearch = (event) => {
@@ -41,16 +42,14 @@ class Giphyfun extends Component {
         if (userSearch.length >0) {
             fetch(url)
                 .then(response => response.json() )
-                .then(json => { this.setState({items: json.data}) });
-            
-            
-                
+                .then(json => { this.setState({items: json.data, searchLength: json.pagination.count}) })
+ 
         }
 
         else {
             fetch('http://api.giphy.com/v1/gifs/trending?api_key=3tgyczxyLIv8UwHGBqnT6qtZYHShOblR')
                 .then(response => response.json() )
-                .then(json => { this.setState({items: json.data}) });
+                .then(json => { this.setState({items: json.data, searchLength: json.pagination.count}) });
             
 
         }
@@ -59,11 +58,24 @@ class Giphyfun extends Component {
         
     }
 
-  
+    handleClick = () => {
+        console.log('user clicked')
+        const max = this.state.searchLength
+    
+
+        const random = Math.floor(Math.random() * max); 
+        this.setState({shuffle: random})
+    }
 
 
     render() { 
-        var {items} = this.state;
+        const {items, searchLength} = this.state;
+        // console.log(items)
+        //const searchLength = this.state.items.length
+        // console.log(searchLength)
+        // this.setState({searchLength: searchLength})
+        //const searchLength = this.state.searchLength
+
   
      
 
@@ -72,10 +84,18 @@ class Giphyfun extends Component {
                 
                 <h2>Find the Right Giphy For You</h2>
                 <Searchbox handleInput={this.handleSearch} />
+                <span>Results: {searchLength}</span>
+      
            
                 { items.length > 0 &&
-                    <Giphycard url={items[0].images.original.url}/>
+                    <Giphycard 
+                        url={items[this.state.shuffle].images.original.url}
+                        title={items[this.state.shuffle].title}
+                        
+                        />
+
                 }
+                <button type="button" className="btn btn-primary m-2" onClick={this.handleClick}>Shuffle</button>
                 
         
                 
