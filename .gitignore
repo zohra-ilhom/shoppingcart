@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 
-/Users/zohraabdulrazaq/Documents/my-app/src/apikey.jsx
+./src/apikey.jsx
